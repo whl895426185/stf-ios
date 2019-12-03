@@ -1,0 +1,98 @@
+body {
+  margin: 0;
+  font: 14px/1.5 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.fn-left {
+  float: right;
+}
+
+.fn-right {
+  float: right;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  box-sizing: border-box;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  width: 1500px;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+}
+
+.header {
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+}
+
+.header a {
+  text-decoration: none;
+}
+
+.header img {
+  width: 50px;
+  margin: 5px 20px;
+  vertical-align: bottom;
+}
+
+.header h1 {
+  display: inline;
+  text-align: center;
+  line-height: 50px;
+}
+
+.header .github-btn {
+  float: right;
+  margin-top: 15px;
+  margin-right: 8px;
+}
+
+.loading {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+  color: #aaa;
+  padding: 100px 0;
+}
+
+.screen {
+  flex: 0;
+  padding: 0 20px;
+
+  img {
+    box-shadow: 0 0 20px rgba(0,0,0,.2);
+  }
+}
+
+.flex-col {
+  flex: 1;
+  overflow: auto;
+  font-size: 12px;
+  padding: 20px 0;
+  border-left: 1px solid #eee;
+
+  &:first-child {
+    flex: none;
+    border-left: 0;
+  }
+
+}
+
+h1 {
+  color: #333;
+}
+

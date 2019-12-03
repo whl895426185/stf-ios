@@ -1,0 +1,30 @@
+1.Requirements
+    brew install usbmuxd
+    brew install libimobiledevice
+    brew install ideviceinstaller
+    brew install carthage
+    brew install socat
+    brew install graphicsmagick zeromq protobuf yasm pkg-config
+
+2.config WebDriverAgent,clone from https://github.com/mrx1203/WebDriverAgent.git，remember the save path,
+this path will pass to the ios-provider with --wda-pat
+
+
+3.start ios-provider，because ios-provider used xcodebuild terminal tools on mac，and docker have not provide this tools ，
+  so you must deploy the ios-provider with source。the steps：
+（1）git clone https://github.com/mrx1203/stf.git
+（2）cd to the stf path,then run the commond:npm install
+（3）start ios-provider
+  stf ios-provider --name "mac081" --connect-sub tcp://x.x.x.x:7114 \
+    --connect-push tcp://x.x.x.x:7116 --storage-url http://x.x.x.x \
+    --public-ip y.y.y.y --heartbeat-interval 20000 \
+    --wda-path wda_save_path/WebDriverAgent/ --wda-port 8100
+    
+ if you just want to supported iOS，you can do follow steps：
+  1.on lib/cli, copy folder ios-device,ios-provider,local，overwrite local folder。
+  2.on lib/units, copy folder ios-device and ios-provider，and overwrite file lib/units/storage/plugins/apk/task/manifest.js。
+  3.on lib/util,copy ipareader.js and download.js，overwrite it
+  4.copy res/app/components/stf/install/install-service.js，overwrite it
+  5.copy res/app/components/stf/storage/storage-service.js，overwrite it
+  6.copy lib/wire/wire.proto，overwrite it
+  7.copy package.json，overwrite it

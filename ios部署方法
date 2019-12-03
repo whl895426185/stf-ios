@@ -1,0 +1,39 @@
+1.环境准备
+  安装libimobiledevice等依赖工具，如果已经安装过，可能需要升级，先卸载，再安装最新版本
+    brew uninstall --ignore-dependencies libimobiledevice
+    brew uninstall --ignore-dependencies usbmuxd
+    brew install --HEAD usbmuxd
+    brew unlink usbmuxd
+    brew link usbmuxd
+    brew install --HEAD libimobiledevice
+    brew install --HEAD ideviceinstaller
+    brew install carthage
+    brew install socat
+
+2.安装stf依赖：brew install graphicsmagick zeromq protobuf yasm pkg-config
+
+3.配置WebDriverAgent,clone代码https://github.com/mrx1203/WebDriverAgent.git，假设代码存放路径为/Users/test/Desktop/WebDriverAgent/
+
+4.启动ios-provider，因为ios-provider需要使用xcodebuild等mac下的命令行工具，而docker容器中并没有提供这类工具，
+  所以不能用docker来部署ios-provider，只能通过源码方式部署。部署步骤如下：
+（1）拉取源代码git clone https://github.com/mrx1203/stf.git
+（2）安装依赖库npm install；npm install --save request；npm install --save request-promise，注意：需切换到stf目录下
+（3）启动ios-provider，假设主服务器的ip地址为172.28.28.36，该节点的ip地址为172.28.28.49
+  stf ios-provider --name "mac081" --connect-sub tcp://172.28.28.36:7250 \
+    --connect-push tcp://172.28.28.36:7270 --storage-url http://172.28.28.36 \
+    --public-ip 172.28.28.49 --heartbeat-interval 20000 \
+    --wda-path /Users/test/Desktop/WebDriverAgent/ --wda-port 8100
+    
+    
+    
+ 前端做了改造，样式还没调，有点丑。
+ 前端加了控件查看器，使用了app-inspector的代码https://github.com/macacajs/app-inspector。
+
+ 如果不想用这里的前端，只想接入iOS，那么只需要拷贝以下文件即可：
+  1.拷贝lib/cli下的ios-device,ios-provider,local三个文件夹，local文件夹可以直接覆盖。
+  2.拷贝lib/units下的ios-device,ios-provider，覆盖lib/units/storage/plugins/apk/task/manifest.js文件。
+  3.拷贝lib/util下的ipareader.js和download.js文件；ipa文件解析和下载
+  4.拷贝res/app/components/stf/install/install-service.js文件；ipa文件的安装
+  5.拷贝res/app/components/stf/storage/storage-service.js文件；上传ipa文件
+  6.拷贝lib/wire/wire.proto文件；加了消息
+  7.拷贝package.json，添加了依赖模块
