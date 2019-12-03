@@ -299,7 +299,8 @@ module.exports = function DeviceListIconsDirective(
         if(previous.params.serial) {
           var id = prefix + previous.params.serial
           if(mapping[id]) {
-            kickDevice(mapping[id])
+            //屏蔽掉，允许同个账号同时占用多个设备使用
+            //kickDevice(mapping[id])
           }
 
         }
