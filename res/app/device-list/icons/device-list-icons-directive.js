@@ -40,7 +40,7 @@ module.exports = function DeviceListIconsDirective(
       //
       //   return li
       // }
-    build: function() {
+    build: function(device) {
         var li = document.createElement('li')
         li.className = 'device-item-huya thumbnail'
 
@@ -58,6 +58,8 @@ module.exports = function DeviceListIconsDirective(
         var remind = document.createElement('button')
         remind.appendChild(document.createTextNode('立即使用'))
         remind.className = 'pull-right-huya'
+        remind.id = device.serial
+
         // remind.innerHTML = '立即使用'
         a.appendChild(remind)
         top.appendChild(a)
@@ -122,6 +124,7 @@ module.exports = function DeviceListIconsDirective(
         if (device.usable) {
           a.href = '#!/control/' + device.serial
           a.firstChild.classList.remove('device-is-busy')
+
         }
         else {
           a.removeAttribute('href')
@@ -507,7 +510,7 @@ module.exports = function DeviceListIconsDirective(
       // the first time we see the device.
       function createItem(device) {
         var id = calculateId(device)
-        var item = builder.build()
+        var item = builder.build(device)
 
         item.id = id
         builder.update(item, device)
