@@ -32,7 +32,7 @@
                         tr(ng-repeat='items in columnDefinitions')
                           th(ng-repeat='item in items', style='text-align:center;vertical-align:middle;')
                             div(ng-bind='item.name | translate')
-                          th(style='text-align:center;vertical-align:middle;')
+                          th(ng-if="currentUser.name == 'admin'",style='text-align:center;vertical-align:middle;')
                             div(ng-if="currentUser.name == 'admin' && items[1].name != 'admin@126.com' && items[1].name != 'deployer@126.com'")
                                button(type="button", ng-click='deleteUser(items)') 删除
                   uib-tab(ng-if="currentUser.name == 'admin'")
