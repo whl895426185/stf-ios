@@ -13,6 +13,7 @@
 
 .fa-pane-scroller {
   /*border: 1px solid #999;*/
+  overflow: inherit;
 }
 
 .fa-pane-parent > .fa-pane-scroller {

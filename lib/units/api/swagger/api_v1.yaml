@@ -44,12 +44,98 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - accessTokenAuth: []
+    post:
+      summary: Add User Profile
+      description: Add User Profile
+      operationId: addUser
+      tags:
+        - user
+      parameters:
+        - name: user
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AddUserResponse"
+      responses:
+        "200":
+          description: Add User Profile
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - accessTokenAuth: []
+  /users:
+    x-swagger-router-controller: user
+    get:
+      summary: User List
+      description: STF users list
+      operationId: getUsersList
+      tags:
+        - user
+      responses:
+        "200":
+          description: STF Users List
+          schema:
+            $ref: "#/definitions/UsersListResponse"
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - accessTokenAuth: []
+  /user/{email}:
+    x-swagger-router-controller: user
+    get:
+      summary: User
+      description: User By Email
+      operationId: getUserByEmail
+      tags:
+        - user
+      parameters:
+        - name: email
+          in: path
+          description: User Email
+          required: true
+          type: string
+      responses:
+        "200":
+          description: User Information
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - accessTokenAuth: []
+    delete:
+      summary: Delete User By Email
+      description: Delete User By Email
+      operationId: deleteUserByEmail
+      tags:
+        - user
+      parameters:
+        - name: email
+          in: path
+          description: User Email
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Delete User By Email
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - accessTokenAuth: []
   /user/update:
     x-swagger-router-controller: user
     post:
       summary: Update User Profile
       description: Update User Profile
-      operationId: updateUser
+      operationId: updateUserPassword
       tags:
         - user
       parameters:
@@ -296,6 +382,31 @@ definitions:
     properties:
       user:
         type: object
+  UsersListResponse:
+    properties:
+      users:
+        type: array
+        items:
+          type: object
+  AddUserResponse:
+    required:
+      - name
+      - email
+      - password
+      - ip
+    properties:
+      name:
+        description: User name
+        type: string
+      email:
+        description: User email
+        type: string
+      password:
+        description: User password
+        type: string
+      ip:
+        description: User ip
+        type: string
   UpdateUserResponse:
     required:
       - userName

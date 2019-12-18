@@ -1,0 +1,69 @@
+.add-user(ng-controller='UserListCtrl')
+  .stf-user-list
+      .col-md-12
+        .widget-container.fluid-height
+          .widget-content.padded
+              uib-tabset.overflow-auto.user-list-active-tabs
+                  uib-tab
+                    uib-tab-heading
+                      i.fa.fa-list
+                      span(translate) 用户管理
+                    div(style='margin-top:20px')
+                      label.search-label 查询条件
+                        i.fa.fa-angle-double-down
+                      form(name='searchinfo', novalidate , ng-submit='search()', ng-init='search()')
+                        label 姓名:
+                        input.form-control.search-input(ng-model='searchName', name='searchName', type='text')
+
+                        label 邮箱:
+                        input.form-control.search-input(ng-model='searchEmail', name='searchEmail', type='text')
+
+                        input.search-submit(type='submit',value='{{ "查询" | translate }}')
+
+                        button.search-reset(ng-click='resetSearch()') 重置
+                    table.table.table-hover.dataTable.ng-table.user-list-table
+                      thead
+                        tr.user-list-tr
+                          th.header(ng-repeat='column in columns', style='text-align:center;vertical-align:middle;')
+                            div(ng-bind='column.name | translate')
+                          th.header(ng-if="currentUser.name == 'admin'",style='text-align:center;vertical-align:middle;')
+                            div(translate) 操作
+                      tbody
+                        tr(ng-repeat='items in columnDefinitions')
+                          th(ng-repeat='item in items', style='text-align:center;vertical-align:middle;')
+                            div(ng-bind='item.name | translate')
+                          th(style='text-align:center;vertical-align:middle;')
+                            div(ng-if="currentUser.name == 'admin' && items[1].name != 'admin@126.com' && items[1].name != 'deployer@126.com'")
+                               button(type="button", ng-click='deleteUser(items)') 删除
+                  uib-tab(ng-if="currentUser.name == 'admin'")
+                    uib-tab-heading
+                      i.fa.fa-user
+                      span(translate) 新增用户
+                    .add-user-wrapper
+                      form(name='userinfo', novalidate , ng-submit='addUser()').add-user-style
+                          .form-group
+                            .add-user.input-group
+                              span.input-group-addon(style='width:150px;', translate) 姓名
+                              input.form-control(ng-model='addName', name='addName', required, type='text',
+                                 style="width:250px;", spellcheck='false')
+                              .add-user.alert(ng-show='userinfo.addName.$invalid')
+                                i.fa.fa-info-circle.fa-fw
+                                span(translate) 必填
+                          .form-group
+                            .add-user.input-group
+                              span.input-group-addon(style='width:150px;', translate) 邮箱
+                              input.form-control(ng-model='addEmail', name='addEmail', required, type='text',
+                                style="width:250px;", spellcheck='false')
+                              .add-user.alert(ng-show='userinfo.addEmail.$invalid')
+                                i.fa.fa-info-circle.fa-fw
+                                span(translate) 必填
+                          .form-group
+                            .add-user.input-group
+                              span.input-group-addon(style='width:150px;', translate) 密码
+                              input.form-control(ng-model='addPassword', name='addPassword', required, type='password',
+                                maxlength=12, minlength=6, style="width:250px;", autocorrect='off', autocapitalize='off', spellcheck='false',
+                                autocomplete='section-login password')
+                              .add-user.alert(ng-show='userinfo.addPassword.$invalid')
+                                i.fa.fa-info-circle.fa-fw
+                                span(translate) 必填，密码长度限制在6~12位
+                          input(type='submit',value='{{ "提交" | translate }}', style='width: 200px;margin-left: 100px;').btn.btn-lg.btn-primary.btn-block
