@@ -38,6 +38,10 @@ module.exports = function UserListCtrl($scope, $http, GroupService, UserService,
       return
     }
 
+    if(emailParam.indexOf("@") == -1 || emailParam.indexOf(".com") == -1){
+      return alert("邮箱格式不正确")
+    }
+
     var data = {
       name: nameParam,
       email: emailParam,
