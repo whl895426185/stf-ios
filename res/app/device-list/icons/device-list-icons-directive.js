@@ -6,6 +6,7 @@ module.exports = function DeviceListIconsDirective(
 , DeviceColumnService
 , GroupService
 , StandaloneService
+, DeviceService
 , $log
 , $rootScope
 ) {
@@ -44,6 +45,14 @@ module.exports = function DeviceListIconsDirective(
         var li = document.createElement('li')
         li.className = 'device-item-huya thumbnail'
 
+        if(!device.usable){
+          var i = document.createElement('i')
+          i.className = 'fa fa-trash-o'
+          i.setAttribute("style" ,"float: right;color: orangered;")
+          i.setAttribute("ng-click", "deleteDevice('" + device.serial +"')")
+          i.setAttribute("value", device.serial)
+          li.appendChild(i)
+        }
         //device-status
         var top = document.createElement('div')
         top.className = 'device-top-huya'
@@ -68,6 +77,7 @@ module.exports = function DeviceListIconsDirective(
         var name = document.createElement('div')
         name.className = 'device-name-huya'
         name.appendChild(document.createTextNode(''))
+
         li.appendChild(name)
 
         //.device-instruction
@@ -98,17 +108,37 @@ module.exports = function DeviceListIconsDirective(
         screen.appendChild(document.createTextNode('分辨率: Unknown'))
         var provider = document.createElement('p')
         provider.appendChild(document.createTextNode('位置： 无'))
+
+        var supportAutomation = document.createElement('p')
+        supportAutomation.appendChild(document.createTextNode("自动部署： "))
+
+        var uiInput = document.createElement('input')
+        uiInput.setAttribute("type", 'checkbox')
+        uiInput.setAttribute("value", device.serial)
+        uiInput.setAttribute("ng-click", "supportAutomation('" + device.serial + "')")
+        if(device.supportAutomation == 1){
+          uiInput.setAttribute("checked", 'checked')
+        }
+        supportAutomation.appendChild(uiInput)
+
         info.appendChild(manufacturer)
         info.appendChild(os)
         info.appendChild(screen)
         info.appendChild(provider)
+        info.appendChild(supportAutomation)
         return li
       }
 
     , update: function(li, device) {
         // $log.log('device: ' + angular.toJson(device))
 
-        var top = li.firstChild
+        var top = ""
+        if(device.usable){
+          top = li.firstChild
+        }else{
+          top = li.children[1]
+        }
+
         var status = top.firstChild.firstChild
         status.nodeValue = $filter('statusHuya')(device.state)
 
@@ -265,36 +295,51 @@ module.exports = function DeviceListIconsDirective(
         })
       }
 
+
       element.on('click', function(e) {
 
-        var id
 
         //点击'使用'或者'停止使用'按钮
         if(e.target.classList.contains('pull-right-huya')) {
-          id = e.target.parentNode.parentNode.parentNode.id
+          var id = e.target.parentNode.parentNode.parentNode.id
+
+          $log.log('id : ' + id)
+
+          if (id) {
+            var device = mapping[id]
+            // $log.log('mapping device : ' + angular.toJson(device))
+
+            if (e.altKey && device.state === 'available') {
+              $log.log('in inviteDevice')
+              inviteDevice(device)
+              e.preventDefault()
+            }
+
+            if (e.shiftKey && device.state === 'available') {
+              StandaloneService.open(device)
+              e.preventDefault()
+            }
+
+            if (device.using) {
+              kickDevice(device)
+              e.preventDefault()
+            }
+          }
         }
 
-        $log.log('id : ' + id)
 
-        if (id) {
-          var device = mapping[id]
-          // $log.log('mapping device : ' + angular.toJson(device))
+        //点击删除设备按钮
+        if(e.target.classList.contains('fa-trash-o')){
+          var id = e.target.attributes[3].nodeValue
+          DeviceService.deleteDevice(id)
 
-          if (e.altKey && device.state === 'available') {
-            $log.log('in inviteDevice')
-            inviteDevice(device)
-            e.preventDefault()
-          }
+        }
 
-          if (e.shiftKey && device.state === 'available') {
-            StandaloneService.open(device)
-            e.preventDefault()
-          }
-
-          if (device.using) {
-            kickDevice(device)
-            e.preventDefault()
-          }
+        //是否支持自动部署
+        if(e.target.type = 'checkbox'){
+          var id = e.target.value
+          var checked = e.target.checked
+          DeviceService.supportAutomation(id, checked)
         }
       })
 
@@ -307,8 +352,6 @@ module.exports = function DeviceListIconsDirective(
           }
 
         }
-
-
       })
 
       // Import column definitions

@@ -2,7 +2,7 @@ var oboe = require('oboe')
 var _ = require('lodash')
 var EventEmitter = require('eventemitter3')
 
-module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceService, $log) {
+module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceService, $log, $window) {
   var deviceService = {}
 
   function Tracker($scope, options) {
@@ -184,6 +184,7 @@ module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceServi
   deviceService.trackGroup = function($scope) {
     var tracker = new Tracker($scope, {
       filter: function(device) {
+        device.using = true
         return device.using
       }
     , digest: true
@@ -224,6 +225,35 @@ module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceServi
       serial: serial,
       note: note
     })
+  }
+
+  deviceService.deleteDevice = function (serial) {
+    $http.delete('/api/v1/devices/' + serial)
+      .then(function (response) {
+        if (response.data.success) {
+          $window.top.location.reload()
+        } else {
+          alert("删除失败")
+        }
+      })
+  }
+
+  deviceService.supportAutomation = function (serial, checked) {
+
+    var data = {
+      serial: serial,
+      supportAutomation: (checked == true ? 1 : 2)
+    }
+
+    $http.post('/api/v1/devices', data)
+      .success(function(response) {
+        if (response.success) {
+          $window.top.location.reload()
+        }else{
+          alert('更新失败')
+        }
+
+      })
   }
 
   return deviceService

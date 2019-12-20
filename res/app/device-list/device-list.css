@@ -92,7 +92,7 @@ img.device-icon-smallest {
 .panel-title{
   fonet-size: 14px;
   font-weight: bold;
-  color: #333333;
+  color: dodgerblue;
 }
 
 .options{
@@ -100,6 +100,9 @@ img.device-icon-smallest {
   height: fit-content;
   /*float:left;*/
   overflow: hidden;
+  font-family: sans-serif;
+  margin-top: 3px;
+  font-size: 14px;
 }
 .more{
   float: right;
@@ -122,12 +125,10 @@ img.device-icon-smallest {
 }
 
 .huya-div{
-  margin-top: 20px
+  margin-top: 5px
   /*float: left;*/
 }
 
 label{
   margin-left: 2px;
 }
-
-

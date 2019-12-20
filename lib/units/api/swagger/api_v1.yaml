@@ -343,6 +343,27 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - accessTokenAuth: []
+    post:
+      summary: Update Device Support Automation
+      description: Update device support auto deployment status
+      operationId: setDeviceSupportAutomation
+      tags:
+        - devices
+      parameters:
+        - name: devices
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UpdateDevicesResponse"
+      responses:
+        "200":
+          description: Update Device Support Automation
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - accessTokenAuth: []
   /devices/{serial}:
     x-swagger-router-controller: devices
     get:
@@ -365,6 +386,29 @@ paths:
       responses:
         "200":
           description: Device Information
+          schema:
+            $ref: "#/definitions/DeviceResponse"
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - accessTokenAuth: []
+    delete:
+      summary: Delete Device
+      description: Single device deletion is supported in case of disconnection
+      operationId: deleteDevice
+      tags:
+        - devices
+      parameters:
+        - name: serial
+          in: path
+          description: Device Serial
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Delete Device
           schema:
             $ref: "#/definitions/DeviceResponse"
         default:
@@ -463,6 +507,17 @@ definitions:
         type: string
       timeout:
         description: Device timeout in ms. If device is kept idle for this period, it will be automatically disconnected. Default is provider group timeout
+        type: integer
+  UpdateDevicesResponse:
+    required:
+      - serial
+      - supportAutomation
+    properties:
+      serial:
+        description: Device serial
+        type: string
+      supportAutomation:
+        description: Device supportAutomation
         type: integer
   ErrorResponse:
     required:

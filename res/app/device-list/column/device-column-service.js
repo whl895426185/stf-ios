@@ -21,7 +21,7 @@ var filterOps = {
 module.exports = function DeviceColumnService($filter, gettext) {
   // Definitions for all possible values.
   return {
-    state: DeviceStatusCell({
+  state: DeviceStatusCell({
       title: gettext('Status')
     , value: function(device) {
         return $filter('translate')(device.enhancedStateAction)
@@ -315,7 +315,13 @@ module.exports = function DeviceColumnService($filter, gettext) {
         return device.version || ''
       }
     })
-  }
+  , supportAutomation: SupportAutomationCell({
+      title: '自动部署'
+      ,value: function(device) {
+        return device.supportAutomation
+      }
+    })
+ }
 }
 
 function zeroPadTwoDigit(digit) {
@@ -771,5 +777,41 @@ function DeviceNoteCell(options) {
   , filter: function(item, filter) {
       return filterIgnoreCase(options.value(item), filter.query)
     }
+  })
+}
+
+function SupportAutomationCell(options) {
+  return _.defaults(options, {
+    title: options.title
+    , defaultOrder: 'asc'
+    , build: function () {
+      var td = document.createElement('td')
+
+      var input = document.createElement('input')
+      input.setAttribute("type", 'checkbox')
+
+      td.appendChild(input)
+      return td
+    }
+    , update: function (td, item) {
+      var input = td.firstChild
+      if (item.supportAutomation == 1) {//支持
+        input.setAttribute("checked", 'checked')
+      }
+      input.setAttribute("disabled", true)
+      return td
+    }
+    , compare: function (a, b) {
+      return 0
+    }
+    , filter: function (device, filter) {
+      if(filter.query === 'supported') {
+        return device.supportAutomation === 1
+
+      } else if(filter.query === 'unsupported') {
+        return device.supportAutomation === 2
+      }
+    }
+
   })
 }

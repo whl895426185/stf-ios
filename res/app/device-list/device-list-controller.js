@@ -129,9 +129,15 @@ module.exports = function DeviceListCtrl(
       name: 'owner'
     , selected: true
     }
+  , {
+      name: 'supportAutomation'
+    , selected: true
+    }
+
   ]
 
   $scope.columns = defaultColumns
+
 
   SettingsService.bind($scope, {
     target: 'columns'
@@ -212,34 +218,39 @@ module.exports = function DeviceListCtrl(
       // $log.log('devices: ' + devices)
       var filters = [
         {
-          title: '品牌',
+          title: '品牌: ',
           name: 'manufacturer',
           values: ['All']
         },
         {
-          title: 'Android OS',
+          title: 'Android OS: ',
           name: 'version',
           values: ['All']
         },
         {
-          title: 'iOS OS',
+          title: 'iOS OS: ',
           name: 'ios_os',
           values: ['All']
         },
         {
-          title: '分辨率',
+          title: '分辨率: ',
           name: 'display',
           values: ['All']
         },
         {
-          title: '状态',
+          title: '状态: ',
           name: 'state',
           values: ['All', 'Available', 'Unavailable']
         },
         {
-          title: '系统',
+          title: '系统: ',
           name: 'platform',
           values: ['All', 'Android', 'iOS']
+        },
+        {
+          title: '自动部署: ',
+          name: 'supportAutomation',
+          values: ['All','Supported','Unsupported']
         }
       ]
 
@@ -269,6 +280,10 @@ module.exports = function DeviceListCtrl(
             dispaly.push(s)
             // filters[3].values.push(s)
           }
+        }
+
+        if(devices[i].supportAutomation){
+
         }
       }
 
@@ -300,7 +315,7 @@ module.exports = function DeviceListCtrl(
     var lowvalue = angular.lowercase(value)
 
     for(var i = 0; i < $scope.filter.length; i++) {
-      if($scope.filter[i].field === lowname) {
+      if($scope.filter[i].field === name) {
         if(lowvalue === 'all') {
           $scope.filter.splice(i, 1)
         }else {
@@ -317,7 +332,7 @@ module.exports = function DeviceListCtrl(
       return
     }
     var object = {
-      field: lowname,
+      field: (lowname === 'all' ? lowname : name),
       op: null,
       query: lowvalue
     }
@@ -365,5 +380,4 @@ module.exports = function DeviceListCtrl(
 
     return arr
   }
-
 }

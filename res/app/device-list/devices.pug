@@ -8,17 +8,17 @@
       .widget-container.fluid-height.stf-device-list-tabs
         .widget-content.padded
           div.huya-div
-              //div.panel-title 筛选条件
+              div.panel-title 查询条件
+                i.fa.fa-angle-double-down
               dl.options(ng-repeat="filter in defaultfilters")
                 dt.title {{filter.title}}
                 dd.huya
-                  //a.more.huya-close(href='javascript:;' ng-click='more($event,filter.title)' ) 更多
                   div.filter-options
                     span.options-item(ng-repeat="value in filter.values")
                       input(type="radio"  name="{{filter.name}}" id="{{value}}"+"_"+"{{filter.title}}" ng-checked="(value === 'All')" value="{{value}}" ng-click='applyFilter(filter.name, value)' )
                       label(for="{{value}}"+"_"+"{{filter.title}}") {{value}}
           uib-tabset.overflow-auto.device-list-active-tabs(ng-if='activeTabs')
-            uib-tab(active='activeTabs.icons', select='focusSearch()')
+            uib-tab(active='activeTabs.icons', select='focusSearch()', id='iconTab')
               uib-tab-heading
                 i.fa.fa-th-large
                 span(translate) Devices
@@ -27,10 +27,12 @@
               div.huya-div
                 device-list-icons(tracker='tracker', columns='columns', sort='sort', filter='filter')
 
-            uib-tab(active='activeTabs.details', select='focusSearch()', ng-if='!$root.basicMode')
+            uib-tab(active='activeTabs.details', select='focusSearch()', ng-if='!$root.basicMode', id='detailTab')
               uib-tab-heading
                 i.fa.fa-list
                 span(translate) Details
               div.device-list-details-content(ng-if='activeTabs.details').selectable
 
                 device-list-details(tracker='tracker', columns='columns', sort='sort', filter='filter').selectable
+
+
