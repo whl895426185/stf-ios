@@ -436,7 +436,6 @@ definitions:
     required:
       - name
       - email
-      - password
       - ip
     properties:
       name:

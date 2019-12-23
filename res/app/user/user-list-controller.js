@@ -32,9 +32,8 @@ module.exports = function UserListCtrl($scope, $http, GroupService, UserService,
     }
     var nameParam = userinfo.addName.value
     var emailParam = userinfo.addEmail.value
-    var passwordParam = userinfo.addPassword.value
 
-    if(undefined === nameParam || undefined === emailParam || undefined === passwordParam) {
+    if(undefined === nameParam || undefined === emailParam) {
       return
     }
 
@@ -45,7 +44,6 @@ module.exports = function UserListCtrl($scope, $http, GroupService, UserService,
     var data = {
       name: nameParam,
       email: emailParam,
-      password: passwordParam,
       ip: $scope.currentUser.ip
     }
 

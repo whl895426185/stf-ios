@@ -41,6 +41,12 @@
                       span(translate) 新增用户
                     .add-user-wrapper
                       form(name='userinfo', novalidate , ng-submit='addUser()').add-user-style
+                          .alert.alert-info.selectable
+                             strong(translate) Tip:
+                             span &nbsp;
+                             span(translate) 新增用户，初始化密码为：123456
+                          br
+
                           .form-group
                             .add-user.input-group
                               span.input-group-addon(style='width:150px;', translate) 姓名
@@ -57,13 +63,4 @@
                               .add-user.alert(ng-show='userinfo.addEmail.$invalid')
                                 i.fa.fa-info-circle.fa-fw
                                 span(translate) 必填
-                          .form-group
-                            .add-user.input-group
-                              span.input-group-addon(style='width:150px;', translate) 密码
-                              input.form-control(ng-model='addPassword', name='addPassword', required, type='password',
-                                maxlength=12, minlength=6, style="width:250px;", autocorrect='off', autocapitalize='off', spellcheck='false',
-                                autocomplete='section-login password')
-                              .add-user.alert(ng-show='userinfo.addPassword.$invalid')
-                                i.fa.fa-info-circle.fa-fw
-                                span(translate) 必填，密码长度限制在6~12位
                           input(type='submit',value='{{ "提交" | translate }}', style='width: 200px;margin-left: 100px;').btn.btn-lg.btn-primary.btn-block
