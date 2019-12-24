@@ -10,13 +10,19 @@
           div.huya-div
               div.panel-title 查询条件
                 i.fa.fa-angle-double-down
-              dl.options(ng-repeat="filter in defaultfilters")
-                dt.title {{filter.title}}
-                dd.huya
-                  div.filter-options
-                    span.options-item(ng-repeat="value in filter.values")
-                      input(type="radio"  name="{{filter.name}}" id="{{value}}"+"_"+"{{filter.title}}" ng-checked="(value === 'All')" value="{{value}}" ng-click='applyFilter(filter.name, value)' )
-                      label(for="{{value}}"+"_"+"{{filter.title}}") {{value}}
+              dl.options(ng-repeat="filter in defaultfilters", ng-if="(filter.name !='version' && filter.name !== 'ios_os')", ng-show='filter.showStatus', style="{{filter.name ==='platform' ? 'color: red;' : 'color: black;'}}")
+                dt.title {{(filter.title == 'version' || filter.title === 'ios_os') ? '' : filter.title}}
+                dd
+                  a(id ="{{filter.name}}" + "_"+ "{{item.name}}" , class="{{(item.name === 'Android' || item.name === 'All') ? 'stf-a-click' : 'stf-a-search'}}", ng-repeat="item in filter.values",
+                   ng-show='item.status', href='', ng-click='applyFilter(filter.name, item)') {{item.name == 'All' ? '全部' : item.name}}
+
+
+                  select.stf-select(ng-if= "undefined != boxData && (filter.name === 'result_version' || filter.name === 'result_ios_os')",
+                    ng-model='selectedOrgName',
+                    ng-options='item.name  for item in boxData.values',
+                    ng-change='applyFilter(boxData.name, this.selectedOrgName)')
+
+
           uib-tabset.overflow-auto.device-list-active-tabs(ng-if='activeTabs')
             uib-tab(active='activeTabs.icons', select='focusSearch()', id='iconTab')
               uib-tab-heading
@@ -34,5 +40,7 @@
               div.device-list-details-content(ng-if='activeTabs.details').selectable
 
                 device-list-details(tracker='tracker', columns='columns', sort='sort', filter='filter').selectable
+
+
 
 

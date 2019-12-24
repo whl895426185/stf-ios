@@ -1,5 +1,4 @@
 require('./device-list.css')
-
 module.exports = angular.module('device-list', [
   require('angular-xeditable').name,
   require('stf/device').name,
@@ -14,6 +13,7 @@ module.exports = angular.module('device-list', [
   require('./stats').name,
   require('./customize').name,
   require('./search').name
+
 ])
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider

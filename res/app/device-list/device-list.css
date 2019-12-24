@@ -132,3 +132,31 @@ img.device-icon-smallest {
 label{
   margin-left: 2px;
 }
+
+.stf-a-search{
+  margin-right: 25px;
+  color: #167FFC;
+  width: 100px;
+  display: inline-block;
+  text-align: center;
+}
+
+.stf-a-click{
+  margin-right: 25px;
+  background: orange;
+  color: white;
+  width: 100px;
+  display: inline-block;
+  text-align: center;
+}
+
+.stf-select{
+  width: 150px;
+  height: 30px;
+  border: solid 1px rgb(82, 168, 236);
+  background: url('../image/arrow.png') no-repeat scroll right center transparent;
+  -webkit-appearance: none;
+  padding-right: 14px;
+  padding-left: 10px;
+}
+
