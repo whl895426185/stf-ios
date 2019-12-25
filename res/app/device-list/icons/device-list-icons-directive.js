@@ -106,8 +106,8 @@ module.exports = function DeviceListIconsDirective(
         os.appendChild(document.createTextNode('系统: Unknown'))
         var screen = document.createElement('p')
         screen.appendChild(document.createTextNode('分辨率: Unknown'))
-        var provider = document.createElement('p')
-        provider.appendChild(document.createTextNode('位置： 无'))
+        // var provider = document.createElement('p')
+        // provider.appendChild(document.createTextNode('位置： 无'))
 
         var supportAutomation = document.createElement('p')
         supportAutomation.appendChild(document.createTextNode("自动部署： "))
@@ -124,7 +124,7 @@ module.exports = function DeviceListIconsDirective(
         info.appendChild(manufacturer)
         info.appendChild(os)
         info.appendChild(screen)
-        info.appendChild(provider)
+        // info.appendChild(provider)
         info.appendChild(supportAutomation)
         return li
       }
@@ -189,10 +189,10 @@ module.exports = function DeviceListIconsDirective(
           screen.firstChild.nodeValue = '分辨率：' + device.display.width + '*' + device.display.height
         }
 
-        if(device.provider) {
-          var provider = screen.nextSibling
-          provider.firstChild.nodeValue = '位置：' + device.provider.name
-        }
+        // if(device.provider) {
+        //   var provider = screen.nextSibling
+        //   provider.firstChild.nodeValue = '位置：' + device.provider.name
+        // }
 
         return li
 

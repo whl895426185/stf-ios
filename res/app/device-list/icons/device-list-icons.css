@@ -173,6 +173,7 @@ p{
   overflow: hidden;
   text-overflow: ellipsis;
   float: left;
+  margin-right: 15px;
 }
 
 .filter-out{
