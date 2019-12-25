@@ -257,7 +257,7 @@ module.exports = function DeviceListCtrl(
         {
           title: '分辨率: ',
           name: 'display',
-          values: [{name: 'All',status:true}],
+          values: [{name: 'All', status:true}],
           showStatus : true
         },
         {
@@ -298,6 +298,7 @@ module.exports = function DeviceListCtrl(
         if(obj.manufacturer && manufacturerArray.indexOf(obj.manufacturer) === -1) {
           var item = {
             name: obj.manufacturer,
+            type: platform,
             status: (platform === 'Android' ? true : false)
           }
           filters[7].values.push(item)
@@ -355,6 +356,7 @@ module.exports = function DeviceListCtrl(
           if(displayArray.indexOf(s) === -1) {
             var item = {
               name: s,
+              type: platform,
               status: (platform === 'Android' ? true : false)
             }
             dispaly.push(item)
@@ -370,7 +372,7 @@ module.exports = function DeviceListCtrl(
       iosOs = sortByVersion(iosOs, '.')
       filters[3].values = filters[3].values.concat(iosOs)
 
-      dispaly = sortByHuya(dispaly, 'x')
+      dispaly = sortByDisplay(dispaly, 'x')
       filters[6].values = filters[6].values.concat(dispaly)
 
 
@@ -393,10 +395,12 @@ module.exports = function DeviceListCtrl(
 
   })
 
-  function change(item) {
+  function change(value, item) {
     item.values.forEach(function (params) {
       if(params.name !== 'All'){
-        if(!params.status){
+        if(value === 'Android' && params.type === 'Android'){
+          params.status = true
+        }else if(value === 'iOS' && params.type === 'iOS'){
           params.status = true
         }else{
           params.status = false
@@ -410,7 +414,7 @@ module.exports = function DeviceListCtrl(
     if(name === 'platform'){
       $scope.defaultfilters.forEach(function (item) {
         if(item.name == 'manufacturer'){//品牌
-          change(item)
+          change(value, item)
 
         }
         if(value === 'Android'){
@@ -441,7 +445,7 @@ module.exports = function DeviceListCtrl(
         }
 
         if(item.name == 'display'){//分辨率
-          change(item)
+          change(value, item)
         }
       })
 
@@ -637,13 +641,13 @@ module.exports = function DeviceListCtrl(
     return arr
   }
 
-  function sortByHuya(arr, separator) {
+  function sortByDisplay(arr, separator) {
     arr.forEach(function(item, index){
       var tmp = item.name.split(separator)
       tmp.forEach(function(value, index){
         tmp[index] = parseInt(value)
       })
-      arr[index] = {name : tmp, status: item.status}
+      arr[index] = {name : tmp, type:item.type, status: item.status}
     })
     arr.sort(sortBy2wei)
     arr.forEach(function(item, index) {
@@ -652,7 +656,7 @@ module.exports = function DeviceListCtrl(
         name += value + separator
       })
       name = name.substring(0, name.length -1)
-      arr[index] = {name: name, status: item.status}
+      arr[index] = {name: name, type:item.type, status: item.status}
     })
 
     return arr
