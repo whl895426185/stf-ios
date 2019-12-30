@@ -684,6 +684,9 @@ function DeviceStatusCell(options) {
       }
     })()
     , filter: function (device, filter) {
+      if(filter.query === ''){
+        return true
+      }
       if (filter.query === 'available') {
         return device.state === filter.query || device.state === 'using'
       } else if (filter.query === 'unavailable') {
