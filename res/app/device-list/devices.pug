@@ -8,20 +8,56 @@
       .widget-container.fluid-height.stf-device-list-tabs
         .widget-content.padded
           div.huya-div
-              div.panel-title 查询条件
-                i.fa.fa-angle-double-down
-              dl.options(ng-repeat="filter in defaultfilters", ng-if="(filter.name !='version' && filter.name !== 'ios_os')", ng-show='filter.showStatus', style="{{filter.name ==='platform' ? 'color: red;' : 'color: black;'}}")
-                dt.title {{(filter.title == 'version' || filter.title === 'ios_os') ? '' : filter.title}}
-                dd
-                  a(id ="{{filter.name}}" + "_"+ "{{item.name}}" , class="{{(item.name === 'Android' || item.name === 'All') ? 'stf-a-click' : 'stf-a-search'}}", ng-repeat="item in filter.values",
-                   ng-show='item.status', href='', ng-click='applyFilter(filter.name, item)') {{item.name == 'All' ? '全部' : item.name}}
+            div(style='margin-top:20px')
+              div.devices-div
+                //系统
+                span.devices-span
+                  label {{defaultfilters[0].title}} :
+                  input(id='{{defaultfilters[0].name}}',type='text', list="{{defaultfilters[0].name + '_list'}}", ng-model='platformValue', ng-change='applyFilter(platformValue, defaultfilters[0])')
+                  datalist(id ="{{defaultfilters[0].name + '_list'}}")
+                    option(ng-repeat='item in defaultfilters[0].values') {{item.name}}
+
+                //品牌
+                span.devices-span
+                  label {{defaultfilters[4].title}} :
+                  input(id='{{defaultfilters[4].name}}',type='text', list="{{defaultfilters[4].name + '_list'}}", ng-model='manufacturerValue', ng-change='applyFilter(manufacturerValue, defaultfilters[4])')
+                  datalist(id ="{{defaultfilters[4].name + '_list'}}")
+                    option(ng-repeat='item in defaultfilters[4].values', ng-if='item.status') {{item.name}}
+
+                //版本
+                span.devices-span(ng-if='defaultfilters[1].showStatus')
+                  label {{defaultfilters[1].title}} :
+                  input(id='{{defaultfilters[1].name}}',type='text', list="{{defaultfilters[1].name + '_list'}}", ng-model='versionTypeValue', ng-change="applyFilter(versionTypeValue, defaultfilters[1])")
+                  datalist(id ="{{defaultfilters[1].name + '_list'}}")
+                    option(ng-repeat='item in defaultfilters[1].values' ng-if='item.status') {{item.name}}
 
 
-                  select.stf-select(ng-if= "undefined != boxData && (filter.name === 'result_version' || filter.name === 'result_ios_os')",
-                    ng-model='selectedOrgName',
-                    ng-options='item.name  for item in boxData.values',
-                    ng-change='applyFilter(boxData.name, this.selectedOrgName)')
+                  input(id='{{versionArray.name}}',type='text', list="{{versionArray.name + '_list'}}", ng-model='versionValue', ng-change='applyFilter(versionValue, versionArray)', ng-if="versionArray.length >0")
+                  datalist(id ="{{versionArray.name + '_list'}}", ng-if="versionArray.length >0")
+                    option(ng-repeat='item in versionArray') {{item.values}}
 
+
+              div.devices-div
+                //状态
+                span.devices-span
+                  label {{defaultfilters[2].title}} :
+                  input(id='{{defaultfilters[2].name}}',type='text', list="{{defaultfilters[2].name + '_list'}}", ng-model='stateValue', ng-change='applyFilter(stateValue, defaultfilters[2])')
+                  datalist(id ="{{defaultfilters[2].name + '_list'}}")
+                    option(ng-repeat='item in defaultfilters[2].values') {{item.name}}
+
+                //分辨率
+                span.devices-span
+                  label {{defaultfilters[3].title}} :
+                  input(id='{{defaultfilters[3].name}}',type='text', list="{{defaultfilters[3].name + '_list'}}", ng-model='displayValue', ng-change='applyFilter(displayValue, defaultfilters[3])')
+                  datalist(id ="{{defaultfilters[3].name + '_list'}}")
+                    option(ng-repeat='item in defaultfilters[3].values', ng-if='item.status') {{item.name}}
+
+                //自动部署
+                span.devices-span
+                  label {{defaultfilters[5].title}} :
+                  input(id='{{defaultfilters[5].name}}',type='text', list="{{defaultfilters[5].name + '_list'}}", ng-model='uiValue', ng-change='applyFilter(uiValue, defaultfilters[5])')
+                  datalist(id ="{{defaultfilters[5].name + '_list'}}")
+                    option(ng-repeat='item in defaultfilters[5].values') {{item.name}}
 
           uib-tabset.overflow-auto.device-list-active-tabs(ng-if='activeTabs')
             uib-tab(active='activeTabs.icons', select='focusSearch()', id='iconTab')

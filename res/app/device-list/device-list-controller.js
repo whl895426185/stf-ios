@@ -2,14 +2,14 @@ var QueryParser = require('./util/query-parser')
 
 module.exports = function DeviceListCtrl(
   $scope
-, $http
-, DeviceService
-, DeviceColumnService
-, GroupService
-, ControlService
-, SettingsService
-, $location
-, $log
+  , $http
+  , DeviceService
+  , DeviceColumnService
+  , GroupService
+  , ControlService
+  , SettingsService
+  , $location
+  , $log
 ) {
   $scope.tracker = DeviceService.trackAll($scope)
   $scope.control = ControlService.create($scope.tracker.devices, '*ALL')
@@ -20,119 +20,119 @@ module.exports = function DeviceListCtrl(
   var defaultColumns = [
     {
       name: 'state'
-    , selected: true
+      , selected: true
     }
-  , {
+    , {
       name: 'model'
-    , selected: true
+      , selected: true
     }
-  , {
+    , {
       name: 'name'
-    , selected: true
+      , selected: true
     }
-  , {
+    , {
       name: 'serial'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'operator'
-    , selected: true
+      , selected: true
     }
-  , {
+    , {
       name: 'releasedAt'
-    , selected: true
+      , selected: true
     }
-  , {
+    , {
       name: 'version'
-    , selected: true
+      , selected: true
     }
-  , {
+    , {
       name: 'network'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'display'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'manufacturer'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'marketName'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'sdk'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'abi'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'cpuPlatform'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'openGLESVersion'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'browser'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'phone'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'imei'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'imsi'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'iccid'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'batteryHealth'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'batterySource'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'batteryStatus'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'batteryLevel'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'batteryTemp'
-    , selected: false
+      , selected: false
     }
-  , {
+    , {
       name: 'provider'
-    , selected: true
+      , selected: true
     }
-  , {
+    , {
       name: 'notes'
-    , selected: true
+      , selected: true
     }
-  , {
+    , {
       name: 'owner'
-    , selected: true
+      , selected: true
     }
-  , {
+    , {
       name: 'supportAutomation'
-    , selected: true
+      , selected: true
     }
 
   ]
@@ -142,7 +142,7 @@ module.exports = function DeviceListCtrl(
 
   SettingsService.bind($scope, {
     target: 'columns'
-  , source: 'deviceListColumns'
+    , source: 'deviceListColumns'
   })
 
   var defaultSort = {
@@ -164,22 +164,22 @@ module.exports = function DeviceListCtrl(
 
   SettingsService.bind($scope, {
     target: 'sort'
-  , source: 'deviceListSort'
+    , source: 'deviceListSort'
   })
 
   $scope.filter = []
 
   $scope.activeTabs = {
     icons: true
-  , details: false
+    , details: false
   }
 
   SettingsService.bind($scope, {
     target: 'activeTabs'
-  , source: 'deviceListActiveTabs'
+    , source: 'deviceListActiveTabs'
   })
 
-  $scope.toggle = function(device) {
+  $scope.toggle = function (device) {
     if (device.using) {
       $scope.kick(device)
     } else {
@@ -187,8 +187,8 @@ module.exports = function DeviceListCtrl(
     }
   }
 
-  $scope.invite = function(device) {
-    return GroupService.invite(device).then(function() {
+  $scope.invite = function (device) {
+    return GroupService.invite(device).then(function () {
       $scope.$digest()
     })
   }
@@ -199,13 +199,13 @@ module.exports = function DeviceListCtrl(
   }
 
 
-  $scope.focusSearch = function() {
+  $scope.focusSearch = function () {
     if (!$scope.basicMode) {
       $scope.search.focusElement = true
     }
   }
 
-  $scope.reset = function() {
+  $scope.reset = function () {
     $scope.search.deviceFilter = ''
     $scope.filter = []
     $scope.sort = defaultSort
@@ -213,68 +213,52 @@ module.exports = function DeviceListCtrl(
   }
 
 
-  $scope.initfilters = function() {
-    return $http.get('/api/v1/devices').then(function(response) {
+  $scope.initfilters = function () {
+    return $http.get('/api/v1/devices').then(function (response) {
       var devices = response.data.devices
       // $log.log('devices: ' + devices)
       var filters = [
         {
-          title: '系统: ',
+          title: '系统',
           name: 'platform',
-          values: [{name: 'Android',status: true}, {name: 'iOS',status: true}],
-          showStatus : true
+          values: [{name: 'Android'}, {name: 'iOS'}],
+          showStatus: true
         },
         {
-          title: '版本分类：',
-          name: 'result_version',
-          values: [{name: 'All', status: true}],
-          showStatus : true
-        },
-        {
-          title: 'version',
-          name: 'version',
+          title: '版本',
+          name: 'version_type',
           values: [],
-          showStatus : false
+          showStatus: false
         },
         {
-          title: '版本分类：',
-          name: 'result_ios_os',
-          values: [{name: 'All', status: true}],
-          showStatus : false
-        },
-        {
-          title: 'ios_os',
-          name: 'ios_os',
-          values: [],
-          showStatus : false
-        },
-        {
-          title: '状态: ',
+          title: '状态',
           name: 'state',
-          values: [{name: 'All',status: true}, {name: 'Available', status: true},{name: 'Unavailable', status: true}],
-          showStatus : true
+          values: [{name: 'Available'}, {name: 'Unavailable'}],
+          showStatus: true
         },
         {
-          title: '分辨率: ',
+          title: '分辨率',
           name: 'display',
-          values: [{name: 'All', status:true}],
-          showStatus : true
+          values: [],
+          showStatus: true
         },
         {
-          title: '品牌: ',
+          title: '品牌',
           name: 'manufacturer',
-          values: [{name: 'All',status: true}],
-          showStatus : true
+          values: [],
+          showStatus: true
         },
         {
-          title: '自动部署: ',
+          title: '自动部署',
           name: 'supportAutomation',
-          values: [{name: 'All',status:true},{name: 'Supported',status:true},{name: 'Unsupported',status:true}],
-          showStatus : true
+          values: [{name: 'Supported'}, {name: 'Unsupported'}],
+          showStatus: true
         }
       ]
 
       //数据存储结果
+      var manufacturer = []
+      var versionType = []
       var androidOs = []
       var iosOs = []
       var dispaly = []
@@ -282,267 +266,265 @@ module.exports = function DeviceListCtrl(
 
       //去除重复数据
       var manufacturerArray = []
-      var androidOsNameArray = []
+      var versionTypeArray = []
       var androidOsArray = []
-      var iosOsNameArray = []
       var iosOsArray = []
       var displayArray = []
 
 
-      for(var i = 0; i < devices.length; i++) {
+      for (var i = 0; i < devices.length; i++) {
         var obj = devices[i]
         //系统
         var platform = obj.platform
 
-        //动态填充品牌信息
-        if(obj.manufacturer && manufacturerArray.indexOf(obj.manufacturer) === -1) {
-          var item = {
-            name: obj.manufacturer,
-            type: platform,
-            status: (platform === 'Android' ? true : false)
-          }
-          filters[7].values.push(item)
-          manufacturerArray.push(obj.manufacturer)
-        }
-
-        //动态填充Android系统版本信息
-        if(platform === 'Android' && obj.version && androidOsArray.indexOf(obj.version) === -1) {
+        //动态填充系统版本信息
+        if (platform === 'Android' && obj.version && androidOsArray.indexOf(obj.version) === -1) {
           var name = obj.version.split(".")[0]
-          if(androidOsNameArray.indexOf(name) === -1){
-            var item = {
-              name: name,
-              values: [obj.version],
-              status: true
-            }
-
-            androidOsNameArray.push(name)
+          var item = {
+            type: 1,
+            name: name,
+            values: [obj.version],
+            status: false
+          }
+          if (versionTypeArray.indexOf(name + '-' + 1) === -1) {
+            versionType.push(item)
+            versionTypeArray.push(name + '-' + 1)
 
             androidOs.push(item)
             androidOsArray.push(obj.version)
-          }else{
+          } else {
             androidOs.forEach(function (item) {
-              if(item.name === name){
+              if (item.name === name) {
                 item.values.push(obj.version)
               }
             })
           }
+
         }
 
         //动态填充ios系统版本信息
-        if(platform === 'iOS' && obj.version && iosOsArray.indexOf(obj.version) === -1) {
+        if (platform === 'iOS' && obj.version && iosOsArray.indexOf(obj.version) === -1) {
           var name = obj.version.split(".")[0]
-          if(iosOsNameArray.indexOf(name) === -1){
-            var item = {
-              name: name,
-              values: [obj.version],
-              status: true
-            }
-            iosOsNameArray.push(name)
+          var item = {
+            type: 2,
+            name: name,
+            values: [obj.version],
+            status: false
+          }
+          if (versionTypeArray.indexOf(name + '-' + 2) === -1) {
+
+            versionType.push(item)
+            versionTypeArray.push(name + '-' + 2)
 
             iosOs.push(item)
             iosOsArray.push(obj.version)
-          }else{
+          } else {
             iosOs.forEach(function (item) {
-              if(item.name === name){
+              if (item.name === name) {
                 item.values.push(obj.version)
               }
             })
           }
+
         }
 
         //动态填充分辨率信息
-        if(obj.display) {
+        if (obj.display) {
           var s = obj.display.width + 'x' + obj.display.height
-          if(displayArray.indexOf(s) === -1) {
+          if (displayArray.indexOf(s) === -1) {
             var item = {
+              type: (platform === 'Android' ? 1 : 2),
               name: s,
-              type: platform,
-              status: (platform === 'Android' ? true : false)
+              status: true
             }
             dispaly.push(item)
             displayArray.push(s)
           }
         }
+        //动态填充品牌信息
+        if (obj.manufacturer && manufacturerArray.indexOf(obj.manufacturer) === -1) {
+          var item = {
+            type: (platform === 'Android' ? 1 : 2),
+            name: obj.manufacturer,
+            status: true
+          }
+          manufacturer.push(item)
+          manufacturerArray.push(obj.manufacturer)
+        }
       }
 
-      androidOs = sortByVersion(androidOs, '.')
+      versionType = sortByVersion(versionType, '.')
+      filters[1].values = filters[1].values.concat(versionType)
 
-      filters[1].values = filters[1].values.concat(androidOs)
+      dispaly = sortByPublic(dispaly, 'x')
+      filters[3].values = filters[3].values.concat(dispaly)
 
-      iosOs = sortByVersion(iosOs, '.')
-      filters[3].values = filters[3].values.concat(iosOs)
+      filters[4].values = manufacturer
 
-      dispaly = sortByDisplay(dispaly, 'x')
-      filters[6].values = filters[6].values.concat(dispaly)
-
-
-      //初始化筛选信息
-      filterData("platform", "Android")
 
       return filters
     })
 
   }
 
-  $scope.initfilters().then(function(filters) {
+  $scope.initfilters().then(function (filters) {
 
     $scope.defaultfilters = filters
-
-    //版本分类加载版本
-    versionPush('All', null,'version', 'result_version', 'ios_os')
 
     return $scope.defaultfilters
 
   })
 
-  function change(value, item) {
-    item.values.forEach(function (params) {
-      if(params.name !== 'All'){
-        if(value === 'Android' && params.type === 'Android'){
-          params.status = true
-        }else if(value === 'iOS' && params.type === 'iOS'){
-          params.status = true
-        }else{
-          params.status = false
-        }
+
+  $scope.versionArray = []
+
+  function changeSearchShow(value, item) {
+    if (item.name === 'platform') {
+      $scope.filter = []
+      clear()
+      if (value === '') {
+        $scope.defaultfilters[1].showStatus = false
+
+        //品牌
+        $scope.defaultfilters[4].values.forEach(function (e) {
+          e.status = true
+        })
+        //分辨率
+        $scope.defaultfilters[3].values.forEach(function (e) {
+          e.status = true
+        })
+      } else if (value === 'Android') {
+        $scope.defaultfilters[1].showStatus = true
+
+        $scope.defaultfilters[1].values.forEach(function (e) {
+          if (e.type === 1) {
+            e.status = true
+          } else {
+            e.status = false
+          }
+        })
+        //品牌
+        $scope.defaultfilters[4].values.forEach(function (e) {
+          e.status = (e.type === 1 ? true : false)
+        })
+        //分辨率
+        $scope.defaultfilters[3].values.forEach(function (e) {
+          e.status = (e.type === 1 ? true : false)
+        })
+      } else if (value === 'iOS') {
+        $scope.defaultfilters[1].showStatus = true
+
+        $scope.defaultfilters[1].values.forEach(function (e) {
+          if (e.type === 2) {
+            e.status = true
+          } else {
+            e.status = false
+          }
+        })
+        //品牌
+        $scope.defaultfilters[4].values.forEach(function (e) {
+          e.status = (e.type === 2 ? true : false)
+        })
+        //分辨率
+        $scope.defaultfilters[3].values.forEach(function (e) {
+          e.status = (e.type === 2 ? true : false)
+        })
+      }
+    }
+
+    var fieldValue = ""
+    $scope.filter.forEach(function (e) {
+      if (e.query === 'platform') {
+        fieldValue = (e.field === 'Android' ? 1 : 2)
       }
     })
-  }
+    if (item.name === 'version_type') {
 
-  function changeShowStatus(name, item){
-    var value = item.name
-    if(name === 'platform'){
-      $scope.defaultfilters.forEach(function (item) {
-        if(item.name == 'manufacturer'){//品牌
-          change(value, item)
-
-        }
-        if(value === 'Android'){
-          if(item.name == 'result_version'){//安卓版本
-            item.showStatus = true
-          }
-          if(item.name == 'version'){//安卓版本
-            item.showStatus = false
-          }
-          if(item.name == 'result_ios_os' || item.name == 'ios_os'){//苹果版本
-            item.showStatus = false
-          }
-
-          versionPush('All', null,'version', 'result_version', 'ios_os')
-        }
-        if(value === 'iOS'){
-          if(item.name == 'result_ios_os'){//苹果版本
-            item.showStatus = true
-          }
-          if(item.name == 'ios_os'){//苹果版本
-            item.showStatus = false
-          }
-          if(item.name == 'result_version' || item.name == 'version'){//安卓版本
-            item.showStatus = false
-          }
-          versionPush('All', null,'ios_os', 'result_ios_os', 'version')
-
-        }
-
-        if(item.name == 'display'){//分辨率
-          change(value, item)
-        }
-      })
-
-      //筛选条件清除之前选择的数据
-      clear(name)
-
-    }
-
-    if(name === 'result_version'){
-      versionPush(value, item.values,'version', 'result_version', 'ios_os')
-    }
-
-    if(name === 'result_ios_os'){
-      versionPush(value, item.values,'ios_os', 'result_ios_os', 'version')
-    }
-  }
-
-
-
-  function versionPush(value, valuesArr, text, text2, text3) {
-    $scope.defaultfilters.forEach(function (litt) {
-      if(litt.name === text){
-        litt.showStatus = true
-        litt.values = []
-
-        if(value === 'All'){
-          var arr = []
-          $scope.defaultfilters.forEach(function (e) {
-            if(e.name === text2){
-              arr = e.values
-            }
-          })
-          arr.forEach(function (a) {
-            if(a.name !== 'All'){
-              a.values.forEach(function (b) {
-                var params = {
-                  name: b,
-                  status: true
-                }
-                litt.values.push(params)
-              })
-            }
-
-          })
-        }else{
-          valuesArr.forEach(function (item) {
-            var params = {
-              name: item,
-              status: true
-            }
-            litt.values.push(params)
-          })
-        }
-
-        $scope.boxData = litt
-
+      if (null !== document.getElementById('version')) {
+        document.getElementById('version').value = ""
       }
-      if(litt.name === text3) {
-        litt.showStatus = false
-        litt.values = []
-        litt.values.push({name: 'All', status: true})
-      }
-    })
-  }
 
-  function clear(name) {
-    $scope.filter = []
-    if(name === 'platform'){
-      $scope.defaultfilters.forEach(function (e) {
-        if(name !== e.name){
-          e.values.forEach(function (f) {
-            var key = e.name + "_" +f.name
-            if(f.status && e.name !== 'version' && e.name !== 'ios_os'){
-              document.getElementById(key).removeAttribute("class")
-
-              if(f.name === 'All'){
-                document.getElementById(key).setAttribute("class", 'stf-a-click')
-              }else{
-                document.getElementById(key).setAttribute("class", 'stf-a-search')
+      $scope.versionArray = []
+      $scope.defaultfilters[1].values.forEach(function (e) {
+        if (e.name === value) {
+          e.values.forEach(function (a) {
+              var item = {
+                name: 'version',
+                values: a
               }
-            }
-
+              $scope.versionArray.push(item)
           })
+
         }
       })
+
     }
   }
 
-  function filterData(name, value){
-    var lowname = angular.lowercase(name)
+
+  function clear() {
+    document.getElementById($scope.defaultfilters[4].name).value = ""
+    document.getElementById($scope.defaultfilters[2].name).value = ""
+    document.getElementById($scope.defaultfilters[3].name).value = ""
+    document.getElementById($scope.defaultfilters[5].name).value = ""
+    $scope.versionArray = []
+  }
+
+  //name 查询条件传参选择的value，item当前对象
+  $scope.applyFilter = function (value, item) {
+    if (null === item || undefined === item) {
+      return
+    }
+
+    //控制栏位的展示
+    changeSearchShow(value, item)
+
+    //数据筛选
     var lowvalue = angular.lowercase(value)
 
-    for(var i = 0; i < $scope.filter.length; i++) {
-      if($scope.filter[i].field === name) {
-        if(lowvalue === 'all') {
+    //特殊处理版本传参
+    var nameParams = item.name
+    if (nameParams === 'version_type') {
+      $scope.defaultfilters[1].values.forEach(function (e) {
+        if(value !== "" && e.name === value){
+          nameParams = (e.type === 1 ? 'version' : 'ios_os')
+        }
+      })
+
+      if(value === ""){
+        nameParams = ""
+        var i = 0
+        $scope.filter.forEach(function (e, index) {
+          if(e.field === 'version' || e.field === 'ios_os'){
+            i = index
+          }
+        })
+        $scope.filter.splice(i, 1)
+      }
+    }
+
+    if (undefined === nameParams && undefined !== item[0] && item[0].name === 'version') {
+      //版本大类肯定不为空，则type从大类中取值
+      $scope.filter.forEach(function (e) {
+        if(e.field === 'version' || e.field === 'ios_os'){
+          if(value !== ""){
+            e.query = value
+          }else{
+            e.query = e.query.split(".")[0]
+          }
+        }
+      })
+    }
+
+    if (value === "") {
+      value = 'All'
+    }
+
+    for (var i = 0; i < $scope.filter.length; i++) {
+      if ($scope.filter[i].field === nameParams) {
+        if (lowvalue === 'all') {
           $scope.filter.splice(i, 1)
-        }else {
+        } else {
           $scope.filter[i].query = lowvalue
         }
 
@@ -552,66 +534,19 @@ module.exports = function DeviceListCtrl(
     }
 
     //最开始filter为空，且选择'all'时
-    if(lowvalue === 'all') {
+    if (lowvalue === 'all') {
       return
     }
-    var object = {
-      field: (lowname === 'all' ? lowname : name),
-      op: null,
-      query: lowvalue
-    }
-
-    // $log.log('new_filter: ' + angular.toJson(object))
-    $scope.filter.push(object)
-  }
-
-  $scope.applyFilter = function(name, item) {
-    if(null === item || undefined === item){
-      return
-    }
-    var value = item.name
-
-    if(name !== 'version' && name !== 'ios_os'){
-      //动态改变显示样式
-      changeCss(name, value)
-
-    }
-
-    //动态变动下查询条件显示
-    changeShowStatus(name, item)
-
-    //筛选数据
-    if(name === 'result_version' || name === 'result_ios_os'){
-      if(name === 'result_version'){
-        name = 'version'
-      }else{
-        name = 'ios_os'
-      }
-    }
-
-    filterData(name, value)
-
-  }
-
-  function changeCss(name, value) {
-    $scope.defaultfilters.forEach(function (e) {
-      if(name === e.name){
-        e.values.forEach(function (f) {
-          var key = name + "_" +f.name
-          if(f.status){
-            document.getElementById(key).removeAttribute("class")
-
-            if(f.name === value){
-              document.getElementById(key).setAttribute("class", 'stf-a-click')
-            }else{
-              document.getElementById(key).setAttribute("class", 'stf-a-search')
-            }
-          }
-
-        })
+    if(nameParams !== undefined && nameParams !== null && nameParams !== ""){
+      var object = {
+        field: nameParams,
+        op: null,
+        query: lowvalue
       }
 
-    })
+      // $log.log('new_filter: ' + angular.toJson(object))
+      $scope.filter.push(object)
+    }
 
   }
 
@@ -620,43 +555,43 @@ module.exports = function DeviceListCtrl(
     var b = bParam.name
 
     var diff = a.length - b.length
-    if(diff > 0) {
+    if (diff > 0) {
       b = b.concat(NewArr(diff))
-    }else if(diff < 0) {
+    } else if (diff < 0) {
       a = a.concat(NewArr((0 - diff)))
     }
-    for(var i = 0; i < a.length; i++) {
-      if(a[i] > b[i]) return 1
-      if(a[i] < b[i]) return -1
-      if(a[i] === b[i] && i === a.length -1) return 0
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] > b[i]) return 1
+      if (a[i] < b[i]) return -1
+      if (a[i] === b[i] && i === a.length - 1) return 0
       continue
     }
   }
 
   function NewArr(number) {
     var arr = []
-    for(var i = 0; i < number; i++) {
+    for (var i = 0; i < number; i++) {
       arr.push(0)
     }
     return arr
   }
 
-  function sortByDisplay(arr, separator) {
-    arr.forEach(function(item, index){
+  function sortByPublic(arr, separator) {
+    arr.forEach(function (item, index) {
       var tmp = item.name.split(separator)
-      tmp.forEach(function(value, index){
+      tmp.forEach(function (value, index) {
         tmp[index] = parseInt(value)
       })
-      arr[index] = {name : tmp, type:item.type, status: item.status}
+      arr[index] = {type: item.type, name: tmp, status: item.status}
     })
     arr.sort(sortBy2wei)
-    arr.forEach(function(item, index) {
+    arr.forEach(function (item, index) {
       var name = ""
       item.name.forEach(function (value) {
         name += value + separator
       })
-      name = name.substring(0, name.length -1)
-      arr[index] = {name: name, type:item.type, status: item.status}
+      name = name.substring(0, name.length - 1)
+      arr[index] = {type: item.type, name: name, status: item.status}
     })
 
     return arr
@@ -668,26 +603,26 @@ module.exports = function DeviceListCtrl(
     arr.sort(sortBy2wei)
 
     //版本小类再排序
-    arr.forEach(function(item, aindex){
+    arr.forEach(function (item, aindex) {
       var brr = item.values
 
-      brr.forEach(function(item, index){
+      brr.forEach(function (item, index) {
         var tmp = item.split(separator)
-        tmp.forEach(function(value, index){
+        tmp.forEach(function (value, index) {
           tmp[index] = parseInt(value)
         })
-        brr[index] = {name : tmp}
+        brr[index] = {name: tmp}
       })
       brr.sort(sortBy2wei)
-      brr.forEach(function(item, index) {
+      brr.forEach(function (item, index) {
         var name = ""
         item.name.forEach(function (value) {
           name += value + separator
         })
-        name = name.substring(0, name.length -1)
+        name = name.substring(0, name.length - 1)
         brr[index] = name
       })
-      arr[aindex] = {name: item.name, values: brr, status: item.status}
+      arr[aindex] = {type: item.type, name: item.name, values: brr, status: item.status}
 
     })
 

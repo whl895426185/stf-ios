@@ -133,23 +133,6 @@ label{
   margin-left: 2px;
 }
 
-.stf-a-search{
-  margin-right: 25px;
-  color: #167FFC;
-  width: 100px;
-  display: inline-block;
-  text-align: center;
-}
-
-.stf-a-click{
-  margin-right: 25px;
-  background: orange;
-  color: white;
-  width: 100px;
-  display: inline-block;
-  text-align: center;
-}
-
 .stf-select{
   width: 150px;
   height: 30px;
@@ -160,3 +143,42 @@ label{
   padding-left: 10px;
 }
 
+.devices-div{
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.search-div{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 40%;
+}
+
+.devices-span{
+  margin-right: 10px;
+}
+span label{
+  margin-right: 15px;
+  width: 70px;
+}
+
+span input{
+  margin-right: 20px;
+  width: 200px;
+}
+
+.stf-device-list .stf-device-details-customize {
+  white-space: nowrap;
+  padding: 10px;
+  padding-bottom: 0;
+  column-count: 2;
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  max-width: 800px;
+}
+
+.stf-device-list .stf-device-details-customize .radio,
+.stf-device-list .stf-device-details-customize .checkbox {
+  margin: 0;
+  margin-bottom: 10px;
+}

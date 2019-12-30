@@ -755,6 +755,9 @@ function SupportAutomationCell(options) {
       return 0
     }
     , filter: function (device, filter) {
+      if (filter.query === '') {
+        return true
+      }
       if (filter.query === 'supported') {
         return device.supportAutomation === 1
 
