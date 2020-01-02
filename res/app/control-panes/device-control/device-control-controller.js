@@ -38,7 +38,12 @@ module.exports = function DeviceControlCtrl($scope, $log, DeviceService, GroupSe
           GroupService.kick(device).then(function() {
             $scope.$digest()
           })
-          $location.path('/devices/')
+         // $location.path('/devices/')
+          var url = $location.$$protocol + "://" + $location.$$host + ":" + $location.$$port + "/#!/devices"
+
+          var refresh = $window.top.location
+          refresh.href = url
+          refresh.reload()
         }
       } else {
         GroupService.kick(device).then(function() {

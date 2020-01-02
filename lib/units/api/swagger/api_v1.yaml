@@ -84,7 +84,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - accessTokenAuth: []
-  /user/{email}:
+  /user/by/{email}:
     x-swagger-router-controller: user
     get:
       summary: User

@@ -3,6 +3,7 @@ var _ = require('lodash')
 var EventEmitter = require('eventemitter3')
 
 module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceService, $log, $window) {
+
   var deviceService = {}
 
   function Tracker($scope, options) {
@@ -184,17 +185,14 @@ module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceServi
   deviceService.trackGroup = function($scope) {
     var tracker = new Tracker($scope, {
       filter: function(device) {
-        device.using = true
         return device.using
       }
     , digest: true
     })
-
-    oboe('/api/v1/user/devices')
+    oboe('/api/v1/user/devices/')
       .node('devices[*]', function(device) {
         tracker.add(device)
       })
-
     return tracker
   }
 
@@ -239,6 +237,10 @@ module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceServi
   }
 
   deviceService.supportAutomation = function (serial, checked) {
+
+    if("" === serial || null === serial || undefined === serial){
+      return
+    }
 
     var data = {
       serial: serial,

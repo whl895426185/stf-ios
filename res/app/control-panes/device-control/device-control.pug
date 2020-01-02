@@ -34,7 +34,7 @@
                 span.device-name-text {{ device.enhancedName }}
                 span.caret(ng-show='groupDevices.length > 0')
 
-            ul.dropdown-menu(role='menu', data-toggle='dropdown', ng-show='groupDevices.length > 0').pointer.unselectable
+            ul.dropdown-menu(role='menu', data-toggle='dropdown', ng-show='groupDevices.length > 0').pointer.unselectable.device-control-ul
               li(ng-repeat='groupDevice in groupDevices')
                 a.device-name-menu-element(ng-click='controlDevice(groupDevice); $event.stopPropagation()')
                   .pull-left

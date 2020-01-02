@@ -287,3 +287,8 @@ device-screen input {
   text-align: center;
   margin-right: 5px;
 }
+
+.device-control-ul{
+  width: 150px;
+  background: aliceblue;
+}

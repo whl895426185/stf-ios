@@ -70,7 +70,7 @@ module.exports = function UserServiceFactory($http, AddAdbKeyModalService, AppSt
 
   //删除用户信息
   UserService.deleteUserByEmail = function (email) {
-    $http.delete('/api/v1/user/' + email)
+    $http.delete('/api/v1/user/by/' + email)
       .then(function (response) {
         if (response.data.success) {
           alert("用户删除成功")

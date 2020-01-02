@@ -45,7 +45,7 @@ module.exports = function DeviceListIconsDirective(
         var li = document.createElement('li')
         li.className = 'device-item-huya thumbnail'
 
-        if(!device.usable){
+        if(!device.usable && (null === device.owner || undefined === device.owner)){
           var i = document.createElement('i')
           i.className = 'fa fa-trash-o'
           i.setAttribute("style" ,"float: right;color: orangered;")
@@ -133,32 +133,33 @@ module.exports = function DeviceListIconsDirective(
         // $log.log('device: ' + angular.toJson(device))
 
         var top = ""
-        if(device.usable){
-          top = li.firstChild
-        }else{
+        if(!device.usable && (null === device.owner || undefined === device.owner)){
           top = li.children[1]
+        }else{
+          top = li.firstChild
         }
 
-        var status = top.firstChild.firstChild
-        status.nodeValue = $filter('statusHuya')(device.state)
+        if(null !== top.firstChild && undefined !== top.firstChild){
+          var status = top.firstChild.firstChild
+          status.nodeValue = $filter('statusHuya')(device.state)
 
-        if(device.owner && device.state !== 'automation' && device.present === true) {
-         status.nodeValue = status.nodeValue + ' by ' + device.owner.name
-        }
+          if(device.owner && device.state !== 'automation' && device.present === true) {
+            status.nodeValue = status.nodeValue + ' by ' + device.owner.name
+          }
+          var remind = top.firstChild.nextSibling.firstChild.firstChild
+          remind.nodeValue = $filter('translate')(device.enhancedStateAction)
 
-        var remind = top.firstChild.nextSibling.firstChild.firstChild
-        remind.nodeValue = $filter('translate')(device.enhancedStateAction)
+          var a = top.firstChild.nextSibling
+          //判断设备是否可用
+          if (device.usable) {
+            a.href = '#!/control/' + device.serial
+            a.firstChild.classList.remove('device-is-busy')
 
-        var a = top.firstChild.nextSibling
-        //判断设备是否可用
-        if (device.usable) {
-          a.href = '#!/control/' + device.serial
-          a.firstChild.classList.remove('device-is-busy')
-
-        }
-        else {
-          a.removeAttribute('href')
-          a.firstChild.classList.add('device-is-busy')
+          }
+          else {
+            a.removeAttribute('href')
+            a.firstChild.classList.add('device-is-busy')
+          }
         }
 
         var name = top.nextSibling
@@ -167,27 +168,39 @@ module.exports = function DeviceListIconsDirective(
 
         var dl = name.nextSibling
 
-        var img = dl.firstChild.firstChild.firstChild
-        img.setAttribute('src', device.enhancedImg)
+        if(null !== dl.firstChild.firstChild && undefined !== dl.firstChild.firstChild){
+          var img = dl.firstChild.firstChild.firstChild
+          img.setAttribute('src', device.enhancedImg)
+        }
+
 
         var dd = dl.firstChild.nextSibling
-        var info = dd.firstChild
+        if(null !== dd && undefined !== dd){
+          var info = dd.firstChild
 
-        var manufactor = info.firstChild
-        if(device.manufacturer) {
-          manufactor.firstChild.nodeValue = '品牌： ' + device.manufacturer
+          var manufactor = info.firstChild
+          if(device.manufacturer) {
+            manufactor.firstChild.nodeValue = '品牌： ' + device.manufacturer
+          }
+          var info = dd.firstChild
+
+          var manufactor = info.firstChild
+          if(device.manufacturer) {
+            manufactor.firstChild.nodeValue = '品牌： ' + device.manufacturer
+          }
+
+          var os = manufactor.nextSibling
+          if(device.version && device.platform) {
+            os.firstChild.nodeValue = '系统： ' + device.platform + ' ' + device.version
+          }
+
+
+          var screen = os.nextSibling
+          if(device.display) {
+            screen.firstChild.nodeValue = '分辨率：' + device.display.width + '*' + device.display.height
+          }
         }
 
-        var os = manufactor.nextSibling
-        if(device.version && device.platform) {
-          os.firstChild.nodeValue = '系统： ' + device.platform + ' ' + device.version
-        }
-
-
-        var screen = os.nextSibling
-        if(device.display) {
-          screen.firstChild.nodeValue = '分辨率：' + device.display.width + '*' + device.display.height
-        }
 
         // if(device.provider) {
         //   var provider = screen.nextSibling
@@ -297,8 +310,6 @@ module.exports = function DeviceListIconsDirective(
 
 
       element.on('click', function(e) {
-
-
         //点击'使用'或者'停止使用'按钮
         if(e.target.classList.contains('pull-right-huya')) {
           var id = e.target.parentNode.parentNode.parentNode.id
