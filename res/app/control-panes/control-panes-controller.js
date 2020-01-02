@@ -39,6 +39,12 @@ module.exports =
         icon: 'fa-info color-blue',
         templateUrl: 'control-panes/inspect/inspect.pug',
         filters: ['native', 'web']
+      },
+      {
+        title: gettext('Logs'),
+        icon: 'fa-list-alt color-red',
+        templateUrl: 'control-panes/logs/logs.pug',
+        filters: ['native', 'web']
       }
     ]
 
@@ -51,14 +57,15 @@ module.exports =
       }
     ].concat(angular.copy(sharedTabs))
 
-    $scope.belowTabs = [
+    //日志模块移动到顶部展示
+    /*$scope.belowTabs = [
       {
         title: gettext('Logs'),
         icon: 'fa-list-alt color-red',
         templateUrl: 'control-panes/logs/logs.pug',
         filters: ['native', 'web']
       }
-     ]
+     ]*/
     // ].concat(angular.copy(sharedTabs))
 
     $scope.device = null
@@ -99,6 +106,12 @@ module.exports =
                 title: gettext('Inspector'),
                 icon: 'fa-info color-blue',
                 templateUrl: 'control-panes/inspect/inspect.pug',
+                filters: ['native', 'web']
+              },
+              {
+                title: gettext('Logs'),
+                icon: 'fa-list-alt color-red',
+                templateUrl: 'control-panes/logs/logs.pug',
                 filters: ['native', 'web']
               }
             ]

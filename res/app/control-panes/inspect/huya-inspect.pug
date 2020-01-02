@@ -1,3 +1,6 @@
 .stf-inspect(ng-controller='InspectCtrl')
-  button(ng-click="getInspect()") Refresh
+  button.btn.btn-sm.btn-primary-outline(ng-click='getInspect()',
+      title='{{"Take Screenshot"|translate}}')
+        i.fa.fa-camera
+        span(translate) Screenshot
   huya-inspector-tab(platform='platform', img='screenresult', file='file', id='id')

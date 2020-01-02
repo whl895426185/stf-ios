@@ -9,7 +9,7 @@
 }
 
 .stf-info .table-infocard tbody > tr > td:first-child {
-  text-align: right;
+  text-align: left;
   margin-right: 20px;
   font-weight: bold;
   white-space: nowrap;
