@@ -235,6 +235,7 @@ device-screen input {
 
 .stf-device-control .device-name-container {
   text-overflow: ellipsis;
+  width: min-content;
 }
 
 .stf-device-control .stf-vnc-device-name .device-small-image {
